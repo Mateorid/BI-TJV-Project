@@ -22,10 +22,10 @@ class WelcomeTest {
         assertEquals(1, 1);
     }
 
-    @Test
-    public void sampleTestFail() {
-        assertEquals("BI-TJV", "BI-PJV");
-    }
+//    @Test
+//    public void sampleTestFail() {
+//        assertEquals("BI-TJV", "BI-PJV");
+//    }
 
     @Test
     public void getWelcome() throws Exception {
