@@ -1,2 +1,0 @@
-cz/cvut/fit/gorgomat/WelcomeTest.java
- cz.cvut.fit.gorgomat.WelcomeTest
