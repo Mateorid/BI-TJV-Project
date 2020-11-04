@@ -1,0 +1,6 @@
+cz/cvut/fit/gorgomat/Application.java
+ cz.cvut.fit.gorgomat.Application
+cz/cvut/fit/gorgomat/Welcome.java
+ cz.cvut.fit.gorgomat.Welcome
+cz/cvut/fit/gorgomat/WelcomeController.java
+ cz.cvut.fit.gorgomat.WelcomeController
