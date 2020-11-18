@@ -36,6 +36,4 @@ class WelcomeTest {
                         "{\"text\":\"Welcome to Ski-Strahov!\"}")
                 );
     }
-
-
 }
