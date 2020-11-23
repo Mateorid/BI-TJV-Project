@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 public class Order {
-    
+
     @Id
     @GeneratedValue
     private long id;
