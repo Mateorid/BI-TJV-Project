@@ -77,15 +77,19 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/equipment?type=ski&size=180
-###
+### NE
 
 GET http://localhost:8080/equipment?available=true
-###
+### NE
 
 GET http://localhost:8080/equipment
-###
+### NE
 
-GET http://localhost:8080/customer
-###
+GET http://localhost:8080/customer?email=gmail
+### JEDE
+
+GET http://localhost:8080/customer?email=gmail
+### JEDE
 
 GET http://localhost:8080/myOrder
+### NE
