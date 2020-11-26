@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-public class Order {
+public class MyOrder {
 
     @Id
     @GeneratedValue
@@ -31,10 +31,10 @@ public class Order {
     )
     private List<Equipment> equipment;
 
-    public Order() {
+    public MyOrder() {
     }
 
-    public Order(Date dateFrom, Date dateTo, Customer customer, List<Equipment> equipment) {
+    public MyOrder(Date dateFrom, Date dateTo, Customer customer, List<Equipment> equipment) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.customer = customer;

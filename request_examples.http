@@ -1,0 +1,91 @@
+POST http://localhost:8080/customer
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"name": "Tracer", "email": "alreadytaken@gmail.com"}
+
+###
+
+POST http://localhost:8080/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 160,
+  "type": "snowboard",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 190,
+  "type": "snowboard",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 180,
+  "type": "ski",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/myOrder
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "dateFrom": "2020-01-01",
+  "dateTo": "2020-05-05",
+  "customerId": 1,
+  "equipmentIds": [2,3,4]
+}
+
+###
+
+GET http://localhost:8080/customer/all
+
+###
+
+PUT http://localhost:8080/equipment/4
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 180,
+  "type": "ski",
+  "available": false
+}
+###
+
+GET http://localhost:8080/equipment?type=ski&size=180
+###
+
+GET http://localhost:8080/equipment?available=true
+###
+
+GET http://localhost:8080/equipment
+###
+
+GET http://localhost:8080/customer
+###
+
+GET http://localhost:8080/myOrder

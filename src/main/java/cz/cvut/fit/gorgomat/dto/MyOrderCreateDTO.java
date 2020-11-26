@@ -3,8 +3,7 @@ package cz.cvut.fit.gorgomat.dto;
 import java.sql.Date;
 import java.util.List;
 
-public class OrderDTO {
-    private final Long id;
+public class MyOrderCreateDTO {
     private final Date dateFrom;
     private final Date dateTo;
 
@@ -12,16 +11,11 @@ public class OrderDTO {
 
     private final List<Long> equipmentIds;
 
-    public OrderDTO(Long id, Date dateFrom, Date dateTo, Long customerId, List<Long> equipmentIds) {
-        this.id = id;
+    public MyOrderCreateDTO(Date dateFrom, Date dateTo, Long customerId, List<Long> equipmentIds) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.customerId = customerId;
         this.equipmentIds = equipmentIds;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Date getDateFrom() {

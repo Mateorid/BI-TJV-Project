@@ -3,6 +3,7 @@ package cz.cvut.fit.gorgomat.service;
 
 import cz.cvut.fit.gorgomat.dto.CustomerCreateDTO;
 import cz.cvut.fit.gorgomat.dto.CustomerDTO;
+import cz.cvut.fit.gorgomat.dto.EquipmentDTO;
 import cz.cvut.fit.gorgomat.entity.Customer;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerDTO update(Long id, CustomerDTO customerDTO) throws Exception {
+    public CustomerDTO update(Long id, CustomerCreateDTO customerDTO) throws Exception {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isEmpty())
             throw new Exception("No customer with such id"); //todo make this better
@@ -59,6 +60,20 @@ public class CustomerService {
 
     public List<Customer> findByIds(List<Long> ids) {
         return customerRepository.findAllById(ids);
+    }
+
+    public List<CustomerDTO> findAllByName(String name) {
+        return customerRepository.findAllByNameContaining(name)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<CustomerDTO> findAllByEmail(String email) {
+        return customerRepository.findAllByEmailContaining(email)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     private CustomerDTO toDTO(Customer customer) {

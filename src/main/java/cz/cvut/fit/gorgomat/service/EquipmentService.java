@@ -32,14 +32,14 @@ public class EquipmentService {
     }
 
     @Transactional
-    public EquipmentDTO update(Long id, EquipmentDTO equipmentDTO) throws Exception {
+    public EquipmentDTO update(Long id, EquipmentCreateDTO equipmentCreateDTO) throws Exception {
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
         if (optionalEquipment.isEmpty())
             throw new Exception("No equipment with such id"); //todo make this better
         Equipment equipment = optionalEquipment.get();
-        equipment.setType(equipmentDTO.getType());
-        equipment.setSize(equipmentDTO.getSize());
-        equipment.setAvailable(equipment.isAvailable());
+        equipment.setType(equipmentCreateDTO.getType());
+        equipment.setSize(equipmentCreateDTO.getSize());
+        equipment.setAvailable(equipmentCreateDTO.isAvailable());
         return toDTO(equipment);
     }
 
@@ -60,6 +60,20 @@ public class EquipmentService {
 
     public List<Equipment> findByIds(List<Long> ids) {
         return equipmentRepository.findAllById(ids);
+    }
+
+    public List<EquipmentDTO> findAllByAvailability(Boolean available) {
+        return equipmentRepository.findAllByAvailable(available)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<EquipmentDTO> findAllByTypeAndSize(String type, int size) {
+        return equipmentRepository.findAllByTypeAndSize(type, size)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     private EquipmentDTO toDTO(Equipment equipment) {
