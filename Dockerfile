@@ -4,4 +4,4 @@ ENV GRADLE_OPTS -Dorg.gradle.deamon=false
 COPY src /build
 WORKDIR /build
 #RUN chmod -R 777 ./gradlew
-RUN ./gradlew build
+RUN src/gradlew build
