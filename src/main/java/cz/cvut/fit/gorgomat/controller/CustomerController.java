@@ -23,11 +23,11 @@ public class CustomerController {
 
     @GetMapping(value = "/customer")
     List<CustomerDTO> getCustomers(@Nullable @RequestParam String name, @Nullable @RequestParam String email) {
-        if (name == null && email == null)
-        return customerService.findAll();
-        else if (name != null)
+        if (email != null)
+            return customerService.findAllByEmail(email);
+        if (name != null)
             return customerService.findAllByName(name);
-        return customerService.findAllByEmail(email);
+        return customerService.findAll();
     }
 
     @GetMapping("/customer/{id}")

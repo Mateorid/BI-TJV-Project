@@ -21,9 +21,8 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
-    @RequestMapping(value = "/equipment", method = RequestMethod.GET)
-    public @ResponseBody
-    List<EquipmentDTO> getEquipment(@Nullable @RequestParam("available") Boolean available, @Nullable @RequestParam("type") String type, @Nullable @RequestParam("size") Integer size) {
+    @GetMapping(value = "/equipment")
+    List<EquipmentDTO> getEquipment(@Nullable @RequestParam Boolean available, @Nullable @RequestParam String type, @Nullable @RequestParam Integer size) {
         if (available != null)
             return equipmentService.findAllByAvailability(available);
         if (type != null && size != null)
