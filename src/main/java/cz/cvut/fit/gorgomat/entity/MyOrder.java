@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class MyOrder {
@@ -75,5 +76,18 @@ public class MyOrder {
 
     public void setEquipments(List<Equipment> equipment) {
         this.equipment = equipment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyOrder myOrder = (MyOrder) o;
+        return id == myOrder.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

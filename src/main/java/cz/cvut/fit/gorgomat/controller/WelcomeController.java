@@ -1,5 +1,6 @@
-package cz.cvut.fit.gorgomat;
+package cz.cvut.fit.gorgomat.controller;
 
+import cz.cvut.fit.gorgomat.Welcome;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ public class WelcomeController {
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/welcome")
-    public Welcome Welcome(@RequestParam(value = "our web", defaultValue = "Ski-Strahov") String text) {
+    public Welcome Welcome(@RequestParam(value = "text", defaultValue = "Ski-Strahov") String text) {
         return new Welcome(
                 counter.incrementAndGet(),
                 String.format(welcomeTxt, text));

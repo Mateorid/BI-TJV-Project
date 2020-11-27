@@ -1,5 +1,7 @@
 package cz.cvut.fit.gorgomat.dto;
 
+import java.util.Objects;
+
 public class CustomerDTO {
 
     private final Long id;
@@ -22,5 +24,20 @@ public class CustomerDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDTO that = (CustomerDTO) o;
+        return id.equals(that.id) &&
+                name.equals(that.name) &&
+                email.equals(that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email);
     }
 }

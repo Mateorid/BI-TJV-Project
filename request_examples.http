@@ -111,3 +111,6 @@ GET http://localhost:8080/myOrder?customerName=Bastion
 
 GET http://localhost:8080/myOrder?customerId=1
 ###
+
+GET http://localhost:8080/welcome?text=our web
+###
