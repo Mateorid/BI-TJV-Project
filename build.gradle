@@ -6,7 +6,7 @@ plugins {
 
 group = 'cz.cvut.fit.gorgomat'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = '15'
+sourceCompatibility = '14'
 
 repositories {
     mavenCentral()
