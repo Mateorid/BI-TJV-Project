@@ -52,10 +52,10 @@ Cache-Control: no-cache
 Content-Type: application/json
 
 {
-  "dateFrom": "2020-01-01",
-  "dateTo": "2020-05-05",
-  "customerId": 1,
-  "equipmentIds": [2,3,4]
+  "dateFrom": "2019-01-01",
+  "dateTo": "2020-01-01",
+  "customerId": 6,
+  "equipmentIds": [3,4]
 }
 
 ###
@@ -76,20 +76,38 @@ Content-Type: application/json
 }
 ###
 
+GET http://localhost:8080/equipment
+###
+
+GET http://localhost:8080/equipment/2
+###
+
 GET http://localhost:8080/equipment?type=ski&size=180
-### NE
+###
 
 GET http://localhost:8080/equipment?available=true
-### NE
+###
 
-GET http://localhost:8080/equipment
-### NE
+GET http://localhost:8080/customer
+###
 
-GET http://localhost:8080/customer?email=gmail
-### JEDE
+GET http://localhost:8080/customer/1
+###
 
-GET http://localhost:8080/customer?email=gmail
-### JEDE
+GET http://localhost:8080/customer?name=Lee
+###
+
+GET http://localhost:8080/customer?email=nerf
+###
 
 GET http://localhost:8080/myOrder
-### NE
+###
+
+GET http://localhost:8080/myOrder/12
+###
+
+GET http://localhost:8080/myOrder?customerName=Bastion
+###
+
+GET http://localhost:8080/myOrder?customerId=1
+###

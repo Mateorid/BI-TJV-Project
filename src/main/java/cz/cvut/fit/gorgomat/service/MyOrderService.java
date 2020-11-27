@@ -94,7 +94,7 @@ public class MyOrderService {
     }
 
     public List<MyOrderDTO> findAllByCustomerName(String name) {
-        return myOrderRepository.findAllByCustomer_Name(name)
+        return myOrderRepository.findAllByCustomer_NameContaining(name)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

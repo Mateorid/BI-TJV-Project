@@ -9,13 +9,5 @@ public interface MyOrderRepository extends JpaRepository<MyOrder, Long> {
 
     List<MyOrder> findAllByCustomer_Id(Long id);
 
-    List<MyOrder> findAllByCustomer_Name(String name);
-
-/*
- @Query(
- "SELECT myOrder FROM  MyOrder myOrder" +
- "JOIN MyOrder.equipment.type equipment WHERE lower(myOrder.equipment.type) = :type)"
- )
- Optional<MyOrder> findAllByEquipment(String type);    //todo do a @Query SQL request, would have to rename all Orders xd
- */
+    List<MyOrder> findAllByCustomer_NameContaining(String name);
 }

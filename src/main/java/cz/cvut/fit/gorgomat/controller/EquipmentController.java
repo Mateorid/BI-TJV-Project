@@ -21,7 +21,7 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
-    @RequestMapping(value="/equipment", method = RequestMethod.GET)
+    @RequestMapping(value = "/equipment", method = RequestMethod.GET)
     public @ResponseBody
     List<EquipmentDTO> getEquipment(@Nullable @RequestParam("available") Boolean available, @Nullable @RequestParam("type") String type, @Nullable @RequestParam("size") Integer size) {
         if (available != null)
@@ -30,7 +30,7 @@ public class EquipmentController {
             return equipmentService.findAllByTypeAndSize(type, size);
         return equipmentService.findAll();
     }
-/*
+
     @GetMapping("/equipment/{id}")
     EquipmentDTO byId(@PathVariable long id) {
         return equipmentService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -44,5 +44,5 @@ public class EquipmentController {
     @PutMapping("/equipment/{id}")
     EquipmentDTO update(@PathVariable long id, @RequestBody EquipmentCreateDTO equipment) throws Exception {
         return equipmentService.update(id, equipment);
-    }*/
+    }
 }
