@@ -12,7 +12,7 @@ public class Equipment {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @NotNull
     private int size;
@@ -32,7 +32,7 @@ public class Equipment {
         this.available = available;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -66,5 +66,10 @@ public class Equipment {
         if (o == null || getClass() != o.getClass()) return false;
         Equipment equipment = (Equipment) o;
         return id == equipment.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
