@@ -3,4 +3,5 @@ FROM openjdk:14-jdk AS app-build
 ENV GRADLE_OPTS -Dorg.gradle.deamon=false
 COPY . /build
 WORKDIR /build
-RUN chmod -R 777 . /gradlew build
+RUN ls -a |
+chmod -R 777 . /gradlew build
