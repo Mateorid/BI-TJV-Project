@@ -5,6 +5,7 @@ import cz.cvut.fit.gorgomat.dto.EquipmentDTO;
 import cz.cvut.fit.gorgomat.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,10 +23,10 @@ public class EquipmentController {
 
     @RequestMapping(value="/equipment", method = RequestMethod.GET)
     public @ResponseBody
-    List<EquipmentDTO> getEquipment(@RequestParam("available") Boolean available, @RequestParam("type") String type, @RequestParam("size") int size) {
+    List<EquipmentDTO> getEquipment(@Nullable @RequestParam("available") Boolean available, @Nullable @RequestParam("type") String type, @Nullable @RequestParam("size") Integer size) {
         if (available != null)
             return equipmentService.findAllByAvailability(available);
-        if (type != null && size != 0)
+        if (type != null && size != null)
             return equipmentService.findAllByTypeAndSize(type, size);
         return equipmentService.findAll();
     }
