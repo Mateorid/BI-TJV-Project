@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,10 +33,10 @@ public class EquipmentService {
     }
 
     @Transactional
-    public EquipmentDTO update(Long id, EquipmentCreateDTO equipmentCreateDTO) throws Exception {
+    public EquipmentDTO update(Long id, EquipmentCreateDTO equipmentCreateDTO) {
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
         if (optionalEquipment.isEmpty())
-            throw new Exception("No equipment with such id"); //todo make this better
+            throw new NoSuchElementException("No equipment with such ID found");
         Equipment equipment = optionalEquipment.get();
         equipment.setType(equipmentCreateDTO.getType());
         equipment.setSize(equipmentCreateDTO.getSize());
@@ -59,7 +60,7 @@ public class EquipmentService {
     }
 
     public List<Equipment> findByIds(List<Long> ids) {
-        return equipmentRepository.findAllById(ids);
+        return equipmentRepository.findAllById(ids); //todo this fails
     }
 
     public List<EquipmentDTO> findAllByAvailability(Boolean available) {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class EquipmentController {
@@ -36,12 +37,16 @@ public class EquipmentController {
     }
 
     @PostMapping("/equipment")
-    EquipmentDTO save(@RequestBody EquipmentCreateDTO equipment) {
+    EquipmentDTO create(@RequestBody EquipmentCreateDTO equipment) {
         return equipmentService.create(equipment);
     }
 
     @PutMapping("/equipment/{id}")
     EquipmentDTO update(@PathVariable long id, @RequestBody EquipmentCreateDTO equipment) throws Exception {
-        return equipmentService.update(id, equipment);
+        try {
+            return equipmentService.update(id, equipment);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class CustomerController {
@@ -36,12 +37,16 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-    CustomerDTO save(@RequestBody CustomerCreateDTO customer) {
+    CustomerDTO create(@RequestBody CustomerCreateDTO customer) {
         return customerService.create(customer);
     }
 
     @PutMapping("/customer/{id}")
     CustomerDTO update(@PathVariable long id, @RequestBody CustomerCreateDTO customer) throws Exception {
-        return customerService.update(id, customer);
+        try {
+            return customerService.update(id, customer);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,4 +57,26 @@ class EquipmentServiceTest {
         assertEquals(69, equipmentProvidedToSave.getSize());
         assertTrue(equipmentProvidedToSave.isAvailable());
     }
+
+    @Test
+    void update(){
+
+    }
+
+
+    @Test
+    void findByIds() {
+        Equipment testEquipment1 = new Equipment(69, "SpeedySticks", true);
+        ReflectionTestUtils.setField(testEquipment1, "id", (long)90);
+        Equipment testEquipment2 = new Equipment(70, "SlowSticks", true);
+        ReflectionTestUtils.setField(testEquipment2, "id", (long)91);
+        List<Equipment> equipmentList = List.of(testEquipment1, testEquipment2);
+        List<Long> equipmentIds = List.of((long) 69, (long) 70);
+
+        assertEquals(equipmentList, equipmentService.findByIds(equipmentIds));
+        List<Equipment> equipmentIdsTest = equipmentService.findByIds(equipmentIds);
+        assertEquals(equipmentIdsTest, equipmentList);
+    }
+
+
 }

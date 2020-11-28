@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,12 +32,12 @@ public class MyOrderService {
 
     public MyOrderDTO create(MyOrderCreateDTO myOrderCreateDTO) throws Exception {
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
-        if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
-            throw new Exception("Some equipment/s missing!"); //todo make this better
+        if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size()) //todo this fails
+            throw new Exception("Some equipment/s missing!"); //todo ask how to make this better
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())
-                        .orElseThrow(() -> new Exception("Customer not found")); //todo make this better
+                        .orElseThrow(() -> new NoSuchElementException("Customer not found"));
 
         return toDTO(
                 myOrderRepository.save(
@@ -49,16 +50,16 @@ public class MyOrderService {
     public MyOrderDTO update(Long id, MyOrderCreateDTO myOrderCreateDTO) throws Exception {
         Optional<MyOrder> optionalOrder = myOrderRepository.findById(id);
         if (optionalOrder.isEmpty())
-            throw new Exception("No myOrder with such id"); //todo make this better
+            throw new NoSuchElementException("No order with such ID found");
         MyOrder myOrder = optionalOrder.get();
 
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
         if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
-            throw new Exception("Some equipment/s missing!"); //todo make this better
+            throw new Exception("Some equipment/s missing!"); //todo ask how to make this better
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())
-                        .orElseThrow(() -> new Exception("Customer not found")); //todo make this better
+                        .orElseThrow(() -> new NoSuchElementException("Customer not found"));
 
         myOrder.setCustomer(customer);
         myOrder.setEquipments(equipments);

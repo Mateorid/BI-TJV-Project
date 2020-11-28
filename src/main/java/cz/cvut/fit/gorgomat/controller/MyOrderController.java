@@ -37,12 +37,20 @@ public class MyOrderController {
     }
 
     @PostMapping("/myOrder")
-    MyOrderDTO save(@RequestBody MyOrderCreateDTO order) throws Exception {
-        return myOrderService.create(order);
+    MyOrderDTO create(@RequestBody MyOrderCreateDTO order) {
+        try {
+            return myOrderService.create(order);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/myOrder/{id}")
-    MyOrderDTO update(@PathVariable long id, @RequestBody MyOrderCreateDTO order) throws Exception {
-        return myOrderService.update(id, order);
+    MyOrderDTO update(@PathVariable long id, @RequestBody MyOrderCreateDTO order) {
+        try {
+            return myOrderService.update(id, order);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,10 +34,10 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerDTO update(Long id, CustomerCreateDTO customerDTO) throws Exception {
+    public CustomerDTO update(Long id, CustomerCreateDTO customerDTO) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isEmpty())
-            throw new Exception("No customer with such id"); //todo make this better
+            throw new NoSuchElementException("No customer with such ID found");
         Customer customer = optionalCustomer.get();
         customer.setName(customerDTO.getName());
         customer.setEmail(customerDTO.getEmail());

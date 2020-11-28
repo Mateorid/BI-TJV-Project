@@ -3,6 +3,7 @@ package cz.cvut.fit.gorgomat.service;
 import cz.cvut.fit.gorgomat.dto.CustomerCreateDTO;
 import cz.cvut.fit.gorgomat.dto.CustomerDTO;
 import cz.cvut.fit.gorgomat.entity.Customer;
+import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,5 +55,17 @@ class CustomerServiceTest {
         Customer customerProvidedToSave = argumentCaptor.getValue();
         assertEquals("Keanu Reeves", customerProvidedToSave.getName());
         assertEquals("urawesome@smile.com", customerProvidedToSave.getEmail());
+    }
+
+    @Test
+    void findById() {
+        //Test data
+        Customer test = new Customer("Tim", "tim@mit.com");
+        ReflectionTestUtils.setField(test, "id", (long) 21);
+        //mock
+        BDDMockito.given(customerRepositoryMock.findById((long) 21)).willReturn(Optional.of(test));
+        //test
+        assertEquals(Optional.of(test), customerService.findById(test.getId()));
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(test.getId());
     }
 }
