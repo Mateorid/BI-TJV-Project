@@ -1,5 +1,7 @@
 package cz.cvut.fit.gorgomat.repository;
 
+import cz.cvut.fit.gorgomat.entity.Customer;
+import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.entity.MyOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +12,6 @@ public interface MyOrderRepository extends JpaRepository<MyOrder, Long> {
     List<MyOrder> findAllByCustomer_Id(Long id);
 
     List<MyOrder> findAllByCustomer_NameContaining(String name);
+
+    List<MyOrder> findAllByEquipmentContaining(Equipment equipment);
 }

@@ -30,10 +30,10 @@ public class MyOrderService {
         this.customerService = customerService;
     }
 
-    public MyOrderDTO create(MyOrderCreateDTO myOrderCreateDTO) throws Exception {
+    public MyOrderDTO create(MyOrderCreateDTO myOrderCreateDTO) {
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
-        if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size()) //todo this fails
-            throw new Exception("Some equipment/s missing!"); //todo ask how to make this better
+        if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
+            throw new Error("Some equipment/s missing!"); //todo ask how to make this better
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())
@@ -47,7 +47,7 @@ public class MyOrderService {
     }
 
     @Transactional
-    public MyOrderDTO update(Long id, MyOrderCreateDTO myOrderCreateDTO) throws Exception {
+    public MyOrderDTO update(Long id, MyOrderCreateDTO myOrderCreateDTO) {
         Optional<MyOrder> optionalOrder = myOrderRepository.findById(id);
         if (optionalOrder.isEmpty())
             throw new NoSuchElementException("No order with such ID found");
@@ -55,7 +55,7 @@ public class MyOrderService {
 
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
         if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
-            throw new Exception("Some equipment/s missing!"); //todo ask how to make this better
+            throw new Error("Some equipment/s missing!"); //todo ask how to make this better
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())
@@ -99,6 +99,14 @@ public class MyOrderService {
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public MyOrderDTO delete(long id) {
+        Optional<MyOrder> myOrderToDelete = myOrderRepository.findById(id);
+        if (myOrderToDelete.isEmpty())
+            throw new NoSuchElementException("No equipment with such ID found");
+        myOrderRepository.deleteById(id);
+        return toDTO(myOrderToDelete.get());
     }
 
     private MyOrderDTO toDTO(MyOrder myOrder) {

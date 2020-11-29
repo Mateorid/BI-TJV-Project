@@ -22,6 +22,11 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
+    @PostMapping("/equipment")
+    EquipmentDTO create(@RequestBody EquipmentCreateDTO equipment) {
+        return equipmentService.create(equipment);
+    }
+
     @GetMapping(value = "/equipment")
     List<EquipmentDTO> getEquipment(@Nullable @RequestParam Boolean available, @Nullable @RequestParam String type, @Nullable @RequestParam Integer size) {
         if (available != null)
@@ -36,17 +41,23 @@ public class EquipmentController {
         return equipmentService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/equipment")
-    EquipmentDTO create(@RequestBody EquipmentCreateDTO equipment) {
-        return equipmentService.create(equipment);
-    }
-
     @PutMapping("/equipment/{id}")
-    EquipmentDTO update(@PathVariable long id, @RequestBody EquipmentCreateDTO equipment) throws Exception {
+    EquipmentDTO update(@PathVariable long id, @RequestBody EquipmentCreateDTO equipment) {
         try {
             return equipmentService.update(id, equipment);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/equipment/{id}")
+    EquipmentDTO delete(@PathVariable long id) {
+        try {
+            return equipmentService.delete(id);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 }

@@ -27,7 +27,7 @@ public class MyOrder {
     @ManyToMany
     @JoinTable(
             name = "order_equipment",
-            joinColumns = @JoinColumn(name = "order_id"),
+            joinColumns = @JoinColumn(name = "order_id"), //todo change to myOrder_id
             inverseJoinColumns = @JoinColumn(name = "equipment_id")
     )
     private List<Equipment> equipment;

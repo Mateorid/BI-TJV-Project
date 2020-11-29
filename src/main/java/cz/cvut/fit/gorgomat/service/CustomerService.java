@@ -3,9 +3,9 @@ package cz.cvut.fit.gorgomat.service;
 
 import cz.cvut.fit.gorgomat.dto.CustomerCreateDTO;
 import cz.cvut.fit.gorgomat.dto.CustomerDTO;
-import cz.cvut.fit.gorgomat.dto.EquipmentDTO;
 import cz.cvut.fit.gorgomat.entity.Customer;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
+import cz.cvut.fit.gorgomat.repository.MyOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final MyOrderRepository myOrderRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, MyOrderRepository myOrderRepository) {
         this.customerRepository = customerRepository;
+        this.myOrderRepository = myOrderRepository;
     }
 
     public CustomerDTO create(CustomerCreateDTO customerCreateDTO) {
@@ -76,6 +78,17 @@ public class CustomerService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public CustomerDTO delete(long id) {
+        Optional<Customer> customerToDelete = customerRepository.findById(id);
+        if (customerToDelete.isEmpty())
+            throw new NoSuchElementException("No customer with such ID found");
+        if (myOrderRepository.findAllByCustomer_Id(id).size() != 0)
+            throw new Error("This customer is part of an order and cant be deleted");
+        customerRepository.deleteById(id);
+        return toDTO(customerToDelete.get());
+    }
+
 
     private CustomerDTO toDTO(Customer customer) {
         return new CustomerDTO(customer.getId(), customer.getName(), customer.getEmail());

@@ -3,7 +3,6 @@ package cz.cvut.fit.gorgomat.service;
 import cz.cvut.fit.gorgomat.dto.CustomerCreateDTO;
 import cz.cvut.fit.gorgomat.dto.CustomerDTO;
 import cz.cvut.fit.gorgomat.entity.Customer;
-import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,14 +56,48 @@ class CustomerServiceTest {
     }
 
     @Test
+    void update() {
+        //Test data
+        Customer originalCustomer = new Customer("Peepo", "peepo@twitch.tv");
+        ReflectionTestUtils.setField(originalCustomer, "id", 21);
+        CustomerDTO updatedCustomer = new CustomerDTO((long) 21, "Pepe", "pepe@twitch.tv");
+        CustomerCreateDTO updatedCreateDTO = new CustomerCreateDTO("Pepe", "pepe@twitch.tv");
+        //Mock
+        BDDMockito.given(customerRepositoryMock.findById(any(Long.TYPE))).willReturn(java.util.Optional.of(originalCustomer));
+        //Test
+        CustomerDTO returnedCustomer = customerService.update((long) 21, updatedCreateDTO);
+        assertEquals(updatedCustomer, returnedCustomer);
+        assertEquals(returnedCustomer.getId(), 21);
+        assertEquals(returnedCustomer.getName(), "Pepe");
+        assertEquals(returnedCustomer.getEmail(), "pepe@twitch.tv");
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(any(Long.TYPE));
+    }
+
+    @Test
     void findById() {
         //Test data
-        Customer test = new Customer("Tim", "tim@mit.com");
+        Customer test = new Customer("Pepe", "pepe@twitch.tv");
         ReflectionTestUtils.setField(test, "id", (long) 21);
         //mock
         BDDMockito.given(customerRepositoryMock.findById((long) 21)).willReturn(Optional.of(test));
-        //test
+        //tests
         assertEquals(Optional.of(test), customerService.findById(test.getId()));
+        assertEquals(test.getId(), 21);
+        assertEquals(test.getName(), "Pepe");
+        assertEquals(test.getEmail(), "pepe@twitch.tv");
         Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(test.getId());
+    }
+
+    @Test
+    void delete() {
+        //Test data
+        Customer testCustomer = new Customer("Tim", "tim@mit.com");
+        ReflectionTestUtils.setField(testCustomer, "id", 21);
+        //Mock
+        BDDMockito.given(customerRepositoryMock.findById(any(Long.TYPE))).willReturn(Optional.of(testCustomer));
+        //Test
+        customerService.delete(testCustomer.getId());
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(any(Long.TYPE));
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).deleteById(any(Long.TYPE));
     }
 }

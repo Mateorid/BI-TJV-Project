@@ -42,11 +42,22 @@ public class CustomerController {
     }
 
     @PutMapping("/customer/{id}")
-    CustomerDTO update(@PathVariable long id, @RequestBody CustomerCreateDTO customer) throws Exception {
+    CustomerDTO update(@PathVariable long id, @RequestBody CustomerCreateDTO customer) {
         try {
             return customerService.update(id, customer);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/customer/{id}")
+    CustomerDTO delete(@PathVariable long id) {
+        try {
+            return customerService.delete(id);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 }

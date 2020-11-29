@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class MyOrderController {
@@ -51,6 +52,17 @@ public class MyOrderController {
             return myOrderService.update(id, order);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/myOrder/{id}")
+    MyOrderDTO delete(@PathVariable long id) {
+        try {
+            return myOrderService.delete(id);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.OK);//FIXME what is LazyInitialization
         }
     }
 }

@@ -39,8 +39,8 @@ Cache-Control: no-cache
 Content-Type: application/json
 
 {
-  "size": 180,
-  "type": "ski",
+  "size": 561,
+  "type": "delete_me XD",
   "available": true
 }
 
@@ -54,8 +54,8 @@ Content-Type: application/json
 {
   "dateFrom": "2019-01-01",
   "dateTo": "2020-01-01",
-  "customerId": 6,
-  "equipmentIds": [3,4]
+  "customerId": 21,
+  "equipmentIds": [22]
 }
 
 ###
@@ -64,13 +64,13 @@ GET http://localhost:8080/customer/all
 
 ###
 
-PUT http://localhost:8080/equipment/4
+PUT http://localhost:8080/equipment/2
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
 
 {
-  "size": 180,
+  "size": 188,
   "type": "ski",
   "available": false
 }
@@ -103,7 +103,7 @@ GET http://localhost:8080/customer?email=nerf
 GET http://localhost:8080/myOrder
 ###
 
-GET http://localhost:8080/myOrder/12
+GET http://localhost:8080/myOrder/16
 ###
 
 GET http://localhost:8080/myOrder?customerName=Bastion
@@ -114,3 +114,20 @@ GET http://localhost:8080/myOrder?customerId=1
 
 GET http://localhost:8080/welcome?text=our web
 ###
+
+DELETE http://localhost:8080/equipment/5
+
+###
+
+DELETE http://localhost:8080/customer/7
+
+###
+
+DELETE http://localhost:8080/myOrder/23
+
+###
+
+DELETE http://localhost:8080/equipment/2
+
+###
+
