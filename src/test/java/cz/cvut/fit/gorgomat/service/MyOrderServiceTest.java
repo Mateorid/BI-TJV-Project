@@ -8,11 +8,9 @@ import cz.cvut.fit.gorgomat.entity.MyOrder;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
 import cz.cvut.fit.gorgomat.repository.EquipmentRepository;
 import cz.cvut.fit.gorgomat.repository.MyOrderRepository;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -127,6 +125,24 @@ class MyOrderServiceTest {
         Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findById(any());
         Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllById(any());
         Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(any());
+    }
+
+    @Test
+    void findAll() {
+        myOrderService.findAll();
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAll();
+    }
+
+    @Test
+    void findAllByCustomerId() {
+        myOrderService.findAllByCustomerId(32L);
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_Id(any());
+    }
+
+    @Test
+    void findAllByCustomerName() {
+        myOrderService.findAllByCustomerName("ttt");
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_NameContaining(any());
     }
 
     @Test

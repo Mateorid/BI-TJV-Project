@@ -74,6 +74,12 @@ class CustomerServiceTest {
     }
 
     @Test
+    void findAll() {
+        customerService.findAll();
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAll();
+    }
+
+    @Test
     void findById() {
         //Test data
         Customer test = new Customer("Pepe", "pepe@twitch.tv");
@@ -86,6 +92,19 @@ class CustomerServiceTest {
         assertEquals(test.getName(), "Pepe");
         assertEquals(test.getEmail(), "pepe@twitch.tv");
         Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(test.getId());
+    }
+
+    @Test
+    void findAllByName() {
+        customerService.findAllByName("test");
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByNameContaining(any(String.class));
+    }
+
+    @Test
+    void findAllByEmail() {
+        customerService.findAllByEmail("test");
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByEmailContaining(any(String.class));
+
     }
 
     @Test

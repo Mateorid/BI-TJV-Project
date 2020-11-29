@@ -79,6 +79,12 @@ class EquipmentServiceTest {
     }
 
     @Test
+    void findAll() {
+        equipmentService.findAll();
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAll();
+    }
+
+    @Test
     void findByIds() {
         //Test data
         Equipment testEquipment1 = new Equipment(69, "SpeedySticks", true);
@@ -98,10 +104,15 @@ class EquipmentServiceTest {
 
     @Test
     void findAllByAvailability() {
+        equipmentService.findAllByAvailability(true);
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByAvailable(true);
     }
 
     @Test
     void findAllByTypeAndSize() {
+        equipmentService.findAllByTypeAndSize("test", 42);
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByTypeAndSize(any(String.class), any(Integer.TYPE));
+
     }
 
     @Test
