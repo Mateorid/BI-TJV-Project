@@ -101,6 +101,7 @@ public class MyOrderService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public MyOrderDTO delete(long id) {
         Optional<MyOrder> myOrderToDelete = myOrderRepository.findById(id);
         if (myOrderToDelete.isEmpty())

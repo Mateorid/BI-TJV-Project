@@ -33,6 +33,7 @@ public class MyOrderController {
     }
 
     @GetMapping("/myOrder/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     MyOrderDTO byId(@PathVariable long id) {
         return myOrderService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
@@ -56,13 +57,12 @@ public class MyOrderController {
     }
 
     @DeleteMapping("/myOrder/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     MyOrderDTO delete(@PathVariable long id) {
         try {
             return myOrderService.delete(id);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.OK);//FIXME what is LazyInitialization
         }
     }
 }

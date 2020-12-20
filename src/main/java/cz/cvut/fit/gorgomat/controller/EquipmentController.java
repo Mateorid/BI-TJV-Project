@@ -23,6 +23,7 @@ public class EquipmentController {
     }
 
     @PostMapping("/equipment")
+    @ResponseStatus(HttpStatus.CREATED)
     EquipmentDTO create(@RequestBody EquipmentCreateDTO equipment) {
         return equipmentService.create(equipment);
     }
@@ -51,6 +52,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping("/equipment/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     EquipmentDTO delete(@PathVariable long id) {
         try {
             return equipmentService.delete(id);

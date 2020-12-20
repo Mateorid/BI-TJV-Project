@@ -37,6 +37,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
+    @ResponseStatus(HttpStatus.CREATED)
     CustomerDTO create(@RequestBody CustomerCreateDTO customer) {
         return customerService.create(customer);
     }
@@ -51,6 +52,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/customer/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     CustomerDTO delete(@PathVariable long id) {
         try {
             return customerService.delete(id);

@@ -119,11 +119,11 @@ DELETE http://localhost:8080/equipment/5
 
 ###
 
-DELETE http://localhost:8080/customer/7
+DELETE http://localhost:8080/customer/27
 
 ###
 
-DELETE http://localhost:8080/myOrder/23
+DELETE http://localhost:8080/myOrder/24
 
 ###
 
@@ -131,3 +131,9 @@ DELETE http://localhost:8080/equipment/2
 
 ###
 
+POST http://localhost:8080/customer
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"name": "Me", "email": "me@gmail.com"}
