@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 public class MyOrderController {
 
     private final MyOrderService myOrderService;
@@ -36,7 +37,7 @@ public class MyOrderController {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    @PostMapping("/myOrder")
+    @PostMapping("/myOrders")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MyOrderModel> create(@RequestBody MyOrderCreateDTO order) {
         try {
@@ -49,7 +50,7 @@ public class MyOrderController {
         }
     }
 
-    @GetMapping("/myOrder")
+    @GetMapping("/myOrders")
     public PagedModel<MyOrderModel> getMyOrder(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "5") int size,
                                                @Nullable @RequestParam String customerName,
@@ -64,13 +65,13 @@ public class MyOrderController {
         return pagedResourcesAssembler.toModel(orderPage, myOrderModelAssembler);
     }
 
-    @GetMapping("/myOrder/{id}")
+    @GetMapping("/myOrders/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public MyOrderModel byId(@PathVariable long id) {
         return myOrderService.findByIdAsModel(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/myOrder/{id}")
+    @PutMapping("/myOrders/{id}")
     public MyOrderModel update(@PathVariable long id, @RequestBody MyOrderCreateDTO order) {
         try {
             return myOrderService.update(id, order);
@@ -79,7 +80,7 @@ public class MyOrderController {
         }
     }
 
-    @DeleteMapping("/myOrder/{id}")
+    @DeleteMapping("/myOrders/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public MyOrderModel delete(@PathVariable long id) {
         try {

@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -34,7 +35,7 @@ public class CustomerController {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    @PostMapping("/customer")
+    @PostMapping("/customers")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CustomerModel> create(@RequestBody CustomerCreateDTO customer) {
         CustomerModel inserted = customerService.create(customer);
@@ -43,7 +44,7 @@ public class CustomerController {
                         .toUri()).build();
     }
 
-    @GetMapping(value = "/customer")
+    @GetMapping(value = "/customers")
     public PagedModel<CustomerModel> getCustomers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "5") int size,
                                                   @Nullable @RequestParam String name,
@@ -58,32 +59,33 @@ public class CustomerController {
         return pagedResourcesAssembler.toModel(customerPage, customerModelAssembler);
     }
 
-    @GetMapping("/customer/{id}")
+    @GetMapping("/customers/{id}")
     public CustomerModel byId(@PathVariable long id) {
         CustomerModel model = customerService.findByIdAsModel(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         model.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(this.getClass()).getCustomers(0, 5, null, null)
         ).withRel(IanaLinkRelations.COLLECTION));
-        return model;}
+        return model;
+    }
 
-    @PutMapping("/customer/{id}")
+    @PutMapping("/customers/{id}")
     public CustomerModel update(@PathVariable long id, @RequestBody CustomerCreateDTO customer) {
         try {
             return customerService.update(id, customer);
         } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
-    @DeleteMapping("/customer/{id}")
+    @DeleteMapping("/customers/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CustomerModel delete(@PathVariable long id) {
         try {
             return customerService.delete(id);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         } catch (Error e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }

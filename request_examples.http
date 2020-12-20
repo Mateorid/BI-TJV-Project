@@ -1,4 +1,4 @@
-POST http://localhost:8080/customer
+POST http://localhost:8080/api/v1/customers
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -7,7 +7,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/equipment
+POST http://localhost:8080/api/v1/equipment
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/equipment
+POST http://localhost:8080/api/v1/equipment
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/equipment
+POST http://localhost:8080/api/v1/equipment
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/myOrder
+POST http://localhost:8080/api/v1/myOrders
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -60,11 +60,11 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/customer/all
+GET http://localhost:8080/api/v1/customers?page=1&size=5
 
 ###
 
-PUT http://localhost:8080/equipment/2
+PUT http://localhost:8080/api/v1/equipment/2
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -76,62 +76,62 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:8080/equipment
+GET http://localhost:8080/api/v1/equipment
 ###
 
-GET http://localhost:8080/equipment/32
+GET http://localhost:8080/api/v1/equipment/32
 ###
 
-GET http://localhost:8080/equipment?type=ski&equipmentSize=180
+GET http://localhost:8080/api/v1/equipment?type=ski&equipmentSize=180
 ###
 
-GET http://localhost:8080/equipment?available=true
+GET http://localhost:8080/api/v1/equipment?available=true
 ###
 
-GET http://localhost:8080/customer
+GET http://localhost:8080/api/v1/customers
 ###
 
-GET http://localhost:8080/customer/1
+GET http://localhost:8080/api/v1/customers/167
 ###
 
-GET http://localhost:8080/customer?name=Lee
+GET http://localhost:8080/api/v1/customers?name=Tra&page=0&size=1
 ###
 
-GET http://localhost:8080/customer?email=nerf
+GET http://localhost:8080/api/v1/customers?email=nerf
 ###
 
-GET http://localhost:8080/myOrder
+GET http://localhost:8080/api/v1/myOrders
 ###
 
-GET http://localhost:8080/myOrder/16
+GET http://localhost:8080/api/v1/myOrders/38
 ###
 
-GET http://localhost:8080/myOrder?customerName=Bastion
+GET http://localhost:8080/api/v1/myOrders?customerName=Bastion
 ###
 
-GET http://localhost:8080/myOrder?customerId=1
+GET http://localhost:8080/api/v1/myOrders?customerId=1
 ###
 
-GET http://localhost:8080/welcome?text=our web
+GET http://localhost:8080/api/v1/welcome?text=our web
 ###
 
-DELETE http://localhost:8080/equipment/5
-
-###
-
-DELETE http://localhost:8080/customer/27
+DELETE http://localhost:8080/api/v1/equipment/35
 
 ###
 
-DELETE http://localhost:8080/myOrder/24
+DELETE http://localhost:8080/api/v1/customers/21
 
 ###
 
-DELETE http://localhost:8080/equipment/30
+DELETE http://localhost:8080/api/v1/myOrders/24
 
 ###
 
-POST http://localhost:8080/customer
+DELETE http://localhost:8080/api/v1/equipment/30
+
+###
+
+POST http://localhost:8080/api/v1/customers
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -140,7 +140,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/equipment
+POST http://localhost:8080/api/v1/equipment
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -149,4 +149,18 @@ Content-Type: application/json
   "size": 561,
   "type": "delete_me XD",
   "available": true
+}
+
+###
+
+POST http://localhost:8080/api/v1/myOrders
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "dateFrom": "2019-01-01",
+  "dateTo": "2020-01-01",
+  "customerId": 33,
+  "equipmentIds": [34]
 }

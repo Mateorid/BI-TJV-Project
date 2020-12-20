@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 public class WelcomeController {
     private static final String welcomeTxt = "Welcome to %s!";
     private final AtomicLong counter = new AtomicLong();

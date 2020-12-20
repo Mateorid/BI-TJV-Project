@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
