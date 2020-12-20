@@ -1,14 +1,16 @@
 package cz.cvut.fit.gorgomat.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.util.Objects;
 
-public class EquipmentDTO {
+public class EquipmentModel extends RepresentationModel<EquipmentModel> {
     private final Long id;
     private final int size;
     private final String type;
     private final boolean available;
 
-    public EquipmentDTO(Long id, int size, String type, boolean available) {
+    public EquipmentModel(Long id, int size, String type, boolean available) {
         this.id = id;
         this.size = size;
         this.type = type;
@@ -35,7 +37,7 @@ public class EquipmentDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EquipmentDTO that = (EquipmentDTO) o;
+        EquipmentModel that = (EquipmentModel) o;
         return size == that.size &&
                 available == that.available &&
                 id.equals(that.id) &&

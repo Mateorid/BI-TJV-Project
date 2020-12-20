@@ -1,24 +1,25 @@
 package cz.cvut.fit.gorgomat.service;
 
 import cz.cvut.fit.gorgomat.dto.EquipmentCreateDTO;
-import cz.cvut.fit.gorgomat.dto.EquipmentDTO;
+import cz.cvut.fit.gorgomat.dto.EquipmentModel;
 import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.repository.EquipmentRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
 class EquipmentServiceTest {
@@ -28,6 +29,7 @@ class EquipmentServiceTest {
 
     @MockBean
     private EquipmentRepository equipmentRepositoryMock;
+    private final Pageable pageable = PageRequest.of(0, 3);
 
     @Test
     void create() {
@@ -39,17 +41,17 @@ class EquipmentServiceTest {
         //Mock
         //We want to return the testEquipment for all passed equipments
         BDDMockito.given(equipmentRepositoryMock.save(any(Equipment.class))).willReturn(testEquipment);
-        EquipmentDTO returnedEquipmentDTO = equipmentService.create(equipmentCreateDTO);
+        EquipmentModel returnedEquipmentModel = equipmentService.create(equipmentCreateDTO);
 
         //Test
-        // Option with equals() in EquipmentDTO
-        EquipmentDTO expectedEquipmentDTO = new EquipmentDTO((long) 21, 69, "SpeedySticks", true);
-        assertEquals(expectedEquipmentDTO, returnedEquipmentDTO);
-        // Option without equals() in EquipmentDTO
-        assertEquals(returnedEquipmentDTO.getId(), 21);
-        assertEquals(returnedEquipmentDTO.getSize(), 69);
-        assertEquals(returnedEquipmentDTO.getType(), "SpeedySticks");
-        assertTrue(returnedEquipmentDTO.isAvailable());
+        // Option with equals() in EquipmentModel
+        EquipmentModel expectedEquipmentModel = new EquipmentModel((long) 21, 69, "SpeedySticks", true);
+        assertEquals(expectedEquipmentModel, returnedEquipmentModel);
+        // Option without equals() in EquipmentModel
+        assertEquals(returnedEquipmentModel.getId(), 21);
+        assertEquals(returnedEquipmentModel.getSize(), 69);
+        assertEquals(returnedEquipmentModel.getType(), "SpeedySticks");
+        assertTrue(returnedEquipmentModel.isAvailable());
         //Checking attributes
         ArgumentCaptor<Equipment> argumentCaptor = ArgumentCaptor.forClass(Equipment.class);
         Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).save(argumentCaptor.capture());
@@ -64,12 +66,12 @@ class EquipmentServiceTest {
         //Test data
         Equipment originalEquipment = new Equipment(69, "SpeedySticks", true);
         ReflectionTestUtils.setField(originalEquipment, "id", 21);
-        EquipmentDTO updatedEquipment = new EquipmentDTO((long) 21, 70, "NotSpeedySticks", false);
+        EquipmentModel updatedEquipment = new EquipmentModel((long) 21, 70, "NotSpeedySticks", false);
         EquipmentCreateDTO updatedCreateDTO = new EquipmentCreateDTO(70, "NotSpeedySticks", false);
         //Mock
         BDDMockito.given(equipmentRepositoryMock.findById(any(Long.TYPE))).willReturn(java.util.Optional.of(originalEquipment));
         //Test
-        EquipmentDTO returnedEquipment = equipmentService.update((long) 21, updatedCreateDTO);
+        EquipmentModel returnedEquipment = equipmentService.update((long) 21, updatedCreateDTO);
         assertEquals(updatedEquipment, returnedEquipment);
         assertEquals(returnedEquipment.getId(), 21);
         assertEquals(returnedEquipment.getSize(), 70);
@@ -80,8 +82,8 @@ class EquipmentServiceTest {
 
     @Test
     void findAll() {
-        equipmentService.findAll();
-        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAll();
+        equipmentService.findAll(pageable);
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAll(any(Pageable.class));
     }
 
     @Test
@@ -104,14 +106,14 @@ class EquipmentServiceTest {
 
     @Test
     void findAllByAvailability() {
-        equipmentService.findAllByAvailability(true);
-        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByAvailable(true);
+        equipmentService.findAllByAvailability(true, pageable);
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByAvailable(anyBoolean(), any(Pageable.class));
     }
 
     @Test
     void findAllByTypeAndSize() {
-        equipmentService.findAllByTypeAndSize("test", 42);
-        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByTypeAndSize(any(String.class), any(Integer.TYPE));
+        equipmentService.findAllByTypeAndSize("test", 42, pageable);
+        Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllByTypeAndSize(any(String.class), any(Integer.TYPE), any(Pageable.class));
 
     }
 

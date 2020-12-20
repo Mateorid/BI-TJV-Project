@@ -79,10 +79,10 @@ Content-Type: application/json
 GET http://localhost:8080/equipment
 ###
 
-GET http://localhost:8080/equipment/2
+GET http://localhost:8080/equipment/32
 ###
 
-GET http://localhost:8080/equipment?type=ski&size=180
+GET http://localhost:8080/equipment?type=ski&equipmentSize=180
 ###
 
 GET http://localhost:8080/equipment?available=true
@@ -127,7 +127,7 @@ DELETE http://localhost:8080/myOrder/24
 
 ###
 
-DELETE http://localhost:8080/equipment/2
+DELETE http://localhost:8080/equipment/30
 
 ###
 
@@ -137,3 +137,16 @@ Cache-Control: no-cache
 Content-Type: application/json
 
 {"name": "Me", "email": "me@gmail.com"}
+
+###
+
+POST http://localhost:8080/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 561,
+  "type": "delete_me XD",
+  "available": true
+}

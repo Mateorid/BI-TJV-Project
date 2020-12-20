@@ -1,7 +1,7 @@
 package cz.cvut.fit.gorgomat.service;
 
 import cz.cvut.fit.gorgomat.dto.CustomerCreateDTO;
-import cz.cvut.fit.gorgomat.dto.CustomerDTO;
+import cz.cvut.fit.gorgomat.dto.CustomerModel;
 import cz.cvut.fit.gorgomat.entity.Customer;
 import cz.cvut.fit.gorgomat.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
@@ -26,6 +28,7 @@ class CustomerServiceTest {
 
     @MockBean
     private CustomerRepository customerRepositoryMock;
+    private final Pageable pageable = PageRequest.of(0, 3);
 
     @Test
     void create() {
@@ -36,16 +39,16 @@ class CustomerServiceTest {
 
         //We want to return the testCustomer for all passed customers
         BDDMockito.given(customerRepositoryMock.save(any(Customer.class))).willReturn(testCustomer);
-        CustomerDTO returnedCustomerDTO = customerService.create(customerCreateDTO);
+        CustomerModel returnedCustomerModel = customerService.create(customerCreateDTO);
 
-        // Option with equals() in CustomerDTO
-        CustomerDTO expectedCustomerDTO = new CustomerDTO((long) 21, "Keanu Reeves", "urawesome@smile.com");
-        assertEquals(expectedCustomerDTO, returnedCustomerDTO);
+        // Option with equals() in CustomerModel
+        CustomerModel expectedCustomerModel = new CustomerModel((long) 21, "Keanu Reeves", "urawesome@smile.com");
+        assertEquals(expectedCustomerModel, returnedCustomerModel);
 
-        // Option without equals() in CustomerDTO
-        assertEquals(returnedCustomerDTO.getId(), 21);
-        assertEquals(returnedCustomerDTO.getName(), "Keanu Reeves");
-        assertEquals(returnedCustomerDTO.getEmail(), "urawesome@smile.com");
+        // Option without equals() in CustomerModel
+        assertEquals(returnedCustomerModel.getId(), 21);
+        assertEquals(returnedCustomerModel.getName(), "Keanu Reeves");
+        assertEquals(returnedCustomerModel.getEmail(), "urawesome@smile.com");
 
         //Checking attributes
         ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
@@ -60,12 +63,12 @@ class CustomerServiceTest {
         //Test data
         Customer originalCustomer = new Customer("Peepo", "peepo@twitch.tv");
         ReflectionTestUtils.setField(originalCustomer, "id", 21);
-        CustomerDTO updatedCustomer = new CustomerDTO((long) 21, "Pepe", "pepe@twitch.tv");
+        CustomerModel updatedCustomer = new CustomerModel((long) 21, "Pepe", "pepe@twitch.tv");
         CustomerCreateDTO updatedCreateDTO = new CustomerCreateDTO("Pepe", "pepe@twitch.tv");
         //Mock
         BDDMockito.given(customerRepositoryMock.findById(any(Long.TYPE))).willReturn(java.util.Optional.of(originalCustomer));
         //Test
-        CustomerDTO returnedCustomer = customerService.update((long) 21, updatedCreateDTO);
+        CustomerModel returnedCustomer = customerService.update((long) 21, updatedCreateDTO);
         assertEquals(updatedCustomer, returnedCustomer);
         assertEquals(returnedCustomer.getId(), 21);
         assertEquals(returnedCustomer.getName(), "Pepe");
@@ -75,8 +78,8 @@ class CustomerServiceTest {
 
     @Test
     void findAll() {
-        customerService.findAll();
-        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAll();
+        customerService.findAll(pageable);
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAll(any(Pageable.class));
     }
 
     @Test
@@ -96,14 +99,14 @@ class CustomerServiceTest {
 
     @Test
     void findAllByName() {
-        customerService.findAllByName("test");
-        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByNameContaining(any(String.class));
+        customerService.findAllByName("test",pageable);
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByNameContaining(any(String.class),any(Pageable.class));
     }
 
     @Test
     void findAllByEmail() {
-        customerService.findAllByEmail("test");
-        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByEmailContaining(any(String.class));
+        customerService.findAllByEmail("test",pageable);
+        Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findAllByEmailContaining(any(String.class),any(Pageable.class));
 
     }
 

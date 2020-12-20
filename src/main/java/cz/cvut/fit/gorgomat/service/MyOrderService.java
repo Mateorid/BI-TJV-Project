@@ -2,12 +2,14 @@ package cz.cvut.fit.gorgomat.service;
 
 
 import cz.cvut.fit.gorgomat.dto.MyOrderCreateDTO;
-import cz.cvut.fit.gorgomat.dto.MyOrderDTO;
+import cz.cvut.fit.gorgomat.dto.MyOrderModel;
 import cz.cvut.fit.gorgomat.entity.Customer;
 import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.entity.MyOrder;
 import cz.cvut.fit.gorgomat.repository.MyOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,7 +32,7 @@ public class MyOrderService {
         this.customerService = customerService;
     }
 
-    public MyOrderDTO create(MyOrderCreateDTO myOrderCreateDTO) {
+    public MyOrderModel create(MyOrderCreateDTO myOrderCreateDTO) {
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
         if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
             throw new Error("Some equipment/s missing!"); //todo ask how to make this better
@@ -39,7 +41,7 @@ public class MyOrderService {
                 customerService.findById(myOrderCreateDTO.getCustomerId())
                         .orElseThrow(() -> new NoSuchElementException("Customer not found"));
 
-        return toDTO(
+        return toModel(
                 myOrderRepository.save(
                         new MyOrder(myOrderCreateDTO.getDateFrom(), myOrderCreateDTO.getDateTo(), customer, equipments)
                 )
@@ -47,7 +49,7 @@ public class MyOrderService {
     }
 
     @Transactional
-    public MyOrderDTO update(Long id, MyOrderCreateDTO myOrderCreateDTO) {
+    public MyOrderModel update(Long id, MyOrderCreateDTO myOrderCreateDTO) {
         Optional<MyOrder> optionalOrder = myOrderRepository.findById(id);
         if (optionalOrder.isEmpty())
             throw new NoSuchElementException("No order with such ID found");
@@ -65,53 +67,44 @@ public class MyOrderService {
         myOrder.setEquipments(equipments);
         myOrder.setDateTo(myOrderCreateDTO.getDateTo());
         myOrder.setDateFrom(myOrderCreateDTO.getDateFrom());
-        return toDTO(myOrder);
+        return toModel(myOrder);
     }
 
-    public List<MyOrderDTO> findAll() {
-        return myOrderRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<MyOrder> findAll(Pageable pageable) {
+        return myOrderRepository.findAll(pageable);
     }
 
     public Optional<MyOrder> findById(long id) {
         return myOrderRepository.findById(id);
     }
 
-    public Optional<MyOrderDTO> findByIdAsDTO(long id) {
-        return toDTO(myOrderRepository.findById(id));
+    public Optional<MyOrderModel> findByIdAsModel(long id) {
+        return toModel(myOrderRepository.findById(id));
     }
 
     public List<MyOrder> findByIds(List<Long> ids) {
         return myOrderRepository.findAllById(ids);
     }
 
-    public List<MyOrderDTO> findAllByCustomerId(Long id) {
-        return myOrderRepository.findAllByCustomer_Id(id)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<MyOrder> findAllByCustomerId(Long id, Pageable pageable) {
+        return myOrderRepository.findAllByCustomer_Id(id, pageable);
     }
 
-    public List<MyOrderDTO> findAllByCustomerName(String name) {
-        return myOrderRepository.findAllByCustomer_NameContaining(name)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<MyOrder> findAllByCustomerName(String name, Pageable pageable) {
+        return myOrderRepository.findAllByCustomer_NameContaining(name, pageable);
     }
 
     @Transactional
-    public MyOrderDTO delete(long id) {
+    public MyOrderModel delete(long id) {
         Optional<MyOrder> myOrderToDelete = myOrderRepository.findById(id);
         if (myOrderToDelete.isEmpty())
             throw new NoSuchElementException("No equipment with such ID found");
         myOrderRepository.deleteById(id);
-        return toDTO(myOrderToDelete.get());
+        return toModel(myOrderToDelete.get());
     }
 
-    private MyOrderDTO toDTO(MyOrder myOrder) {
-        return new MyOrderDTO(
+    private MyOrderModel toModel(MyOrder myOrder) {
+        return new MyOrderModel(
                 myOrder.getId(),
                 myOrder.getDateFrom(),
                 myOrder.getDateTo(),
@@ -120,9 +113,9 @@ public class MyOrderService {
         );
     }
 
-    private Optional<MyOrderDTO> toDTO(Optional<MyOrder> optionalOrder) {
+    private Optional<MyOrderModel> toModel(Optional<MyOrder> optionalOrder) {
         if (optionalOrder.isEmpty())
             return Optional.empty();
-        return Optional.of(toDTO(optionalOrder.get()));
+        return Optional.of(toModel(optionalOrder.get()));
     }
 }

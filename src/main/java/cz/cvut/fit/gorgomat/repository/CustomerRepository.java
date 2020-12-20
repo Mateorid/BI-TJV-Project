@@ -1,13 +1,14 @@
 package cz.cvut.fit.gorgomat.repository;
 
 import cz.cvut.fit.gorgomat.entity.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    List<Customer> findAllByNameContaining(String name);
+    Page<Customer> findAllByNameContaining(String name, Pageable pageable);
 
-    List<Customer> findAllByEmailContaining(String email);
+    Page<Customer> findAllByEmailContaining(String email, Pageable pageable);
 }

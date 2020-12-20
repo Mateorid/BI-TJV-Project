@@ -1,7 +1,7 @@
 package cz.cvut.fit.gorgomat.service;
 
 import cz.cvut.fit.gorgomat.dto.MyOrderCreateDTO;
-import cz.cvut.fit.gorgomat.dto.MyOrderDTO;
+import cz.cvut.fit.gorgomat.dto.MyOrderModel;
 import cz.cvut.fit.gorgomat.entity.Customer;
 import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.entity.MyOrder;
@@ -15,6 +15,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.sql.Date;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
@@ -37,6 +39,7 @@ class MyOrderServiceTest {
     private EquipmentRepository equipmentRepositoryMock;
     @MockBean
     private CustomerRepository customerRepositoryMock;
+    private final Pageable pageable = PageRequest.of(0, 3);
 
     @Test
     void create() {
@@ -58,21 +61,21 @@ class MyOrderServiceTest {
         MyOrder testMyOrder = new MyOrder(from, to, testCustomer, equipmentList);
         ReflectionTestUtils.setField(testMyOrder, "id", 21);
         MyOrderCreateDTO myOrderCreateDTO = new MyOrderCreateDTO(from, to, 15L, equipmentIds);
-        MyOrderDTO expectedMyOrderDTO = new MyOrderDTO(21L, from, to, 15L, equipmentIds);
+        MyOrderModel expectedMyOrderModel = new MyOrderModel(21L, from, to, 15L, equipmentIds);
 
         //Mock
         BDDMockito.given(myOrderRepositoryMock.save(any(MyOrder.class))).willReturn(testMyOrder);
         BDDMockito.given(equipmentRepositoryMock.findAllById(any())).willReturn(equipmentList);
         BDDMockito.given(customerRepositoryMock.findById(any(Long.TYPE))).willReturn(Optional.of(testCustomer));
-        MyOrderDTO returnedMyOrderDTO = myOrderService.create(myOrderCreateDTO);
+        MyOrderModel returnedMyOrderModel = myOrderService.create(myOrderCreateDTO);
 
         //Test
-        assertEquals(expectedMyOrderDTO, returnedMyOrderDTO);
-        assertEquals(returnedMyOrderDTO.getId(), 21);
-        assertEquals(returnedMyOrderDTO.getDateFrom(), from);
-        assertEquals(returnedMyOrderDTO.getDateTo(), to);
-        assertEquals(returnedMyOrderDTO.getCustomerId(), 15);
-        assertEquals(returnedMyOrderDTO.getEquipmentIds(), equipmentIds);
+        assertEquals(expectedMyOrderModel, returnedMyOrderModel);
+        assertEquals(returnedMyOrderModel.getId(), 21);
+        assertEquals(returnedMyOrderModel.getDateFrom(), from);
+        assertEquals(returnedMyOrderModel.getDateTo(), to);
+        assertEquals(returnedMyOrderModel.getCustomerId(), 15);
+        assertEquals(returnedMyOrderModel.getEquipmentIds(), equipmentIds);
         ArgumentCaptor<MyOrder> argumentCaptor = ArgumentCaptor.forClass(MyOrder.class);
         Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).save(argumentCaptor.capture());
         Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllById(any());
@@ -107,21 +110,21 @@ class MyOrderServiceTest {
         MyOrder originalOrder = new MyOrder(from, to, originalCustomer, equipmentList);
         ReflectionTestUtils.setField(originalOrder, "id", 21L);
         MyOrderCreateDTO updatedOrderCDTO = new MyOrderCreateDTO(to, from, 16L, updatedEquipmentIds);
-        MyOrderDTO expectedMyOrderDTO = new MyOrderDTO(21L, to, from, 16L, updatedEquipmentIds);
+        MyOrderModel expectedMyOrderModel = new MyOrderModel(21L, to, from, 16L, updatedEquipmentIds);
 
         //Mock
         BDDMockito.given(myOrderRepositoryMock.findById(any(Long.TYPE))).willReturn(Optional.of(originalOrder));
         BDDMockito.given(equipmentRepositoryMock.findAllById(any())).willReturn(updatedEquipmentList);
         BDDMockito.given(customerRepositoryMock.findById(any(Long.TYPE))).willReturn(Optional.of(originalCustomer));
-        MyOrderDTO returnedMyOrderDTO = myOrderService.update(21L, updatedOrderCDTO);
+        MyOrderModel returnedMyOrderModel = myOrderService.update(21L, updatedOrderCDTO);
 
         //Test
-        assertEquals(expectedMyOrderDTO, returnedMyOrderDTO);
-        assertEquals(returnedMyOrderDTO.getId(), expectedMyOrderDTO.getId());
-        assertEquals(returnedMyOrderDTO.getDateFrom(), expectedMyOrderDTO.getDateFrom());
-        assertEquals(returnedMyOrderDTO.getDateTo(), expectedMyOrderDTO.getDateTo());
-        assertEquals(returnedMyOrderDTO.getCustomerId(), expectedMyOrderDTO.getCustomerId());
-        assertEquals(returnedMyOrderDTO.getEquipmentIds(), expectedMyOrderDTO.getEquipmentIds());
+        assertEquals(expectedMyOrderModel, returnedMyOrderModel);
+        assertEquals(returnedMyOrderModel.getId(), expectedMyOrderModel.getId());
+        assertEquals(returnedMyOrderModel.getDateFrom(), expectedMyOrderModel.getDateFrom());
+        assertEquals(returnedMyOrderModel.getDateTo(), expectedMyOrderModel.getDateTo());
+        assertEquals(returnedMyOrderModel.getCustomerId(), expectedMyOrderModel.getCustomerId());
+        assertEquals(returnedMyOrderModel.getEquipmentIds(), expectedMyOrderModel.getEquipmentIds());
         Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findById(any());
         Mockito.verify(equipmentRepositoryMock, Mockito.atLeastOnce()).findAllById(any());
         Mockito.verify(customerRepositoryMock, Mockito.atLeastOnce()).findById(any());
@@ -129,20 +132,20 @@ class MyOrderServiceTest {
 
     @Test
     void findAll() {
-        myOrderService.findAll();
-        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAll();
+        myOrderService.findAll(pageable);
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAll(any(Pageable.class));
     }
 
     @Test
     void findAllByCustomerId() {
-        myOrderService.findAllByCustomerId(32L);
-        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_Id(any());
+        myOrderService.findAllByCustomerId(32L, pageable);
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_Id(anyLong(), any(Pageable.class));
     }
 
     @Test
     void findAllByCustomerName() {
-        myOrderService.findAllByCustomerName("ttt");
-        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_NameContaining(any());
+        myOrderService.findAllByCustomerName("ttt", pageable);
+        Mockito.verify(myOrderRepositoryMock, Mockito.atLeastOnce()).findAllByCustomer_NameContaining(anyString(), any(Pageable.class));
     }
 
     @Test

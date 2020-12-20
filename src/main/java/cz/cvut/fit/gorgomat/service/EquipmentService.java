@@ -2,13 +2,14 @@ package cz.cvut.fit.gorgomat.service;
 
 
 import cz.cvut.fit.gorgomat.dto.EquipmentCreateDTO;
-import cz.cvut.fit.gorgomat.dto.EquipmentDTO;
+import cz.cvut.fit.gorgomat.dto.EquipmentModel;
 import cz.cvut.fit.gorgomat.entity.Equipment;
 import cz.cvut.fit.gorgomat.repository.EquipmentRepository;
 import cz.cvut.fit.gorgomat.repository.MyOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -28,8 +29,8 @@ public class EquipmentService {
         this.myOrderRepository = myOrderRepository;
     }
 
-    public EquipmentDTO create(EquipmentCreateDTO equipmentCreateDTO) {
-        return toDTO(
+    public EquipmentModel create(EquipmentCreateDTO equipmentCreateDTO) {
+        return toModel(
                 equipmentRepository.save(
                         new Equipment(equipmentCreateDTO.getSize(), equipmentCreateDTO.getType(), equipmentCreateDTO.isAvailable())
                 )
@@ -37,7 +38,7 @@ public class EquipmentService {
     }
 
     @Transactional
-    public EquipmentDTO update(Long id, EquipmentCreateDTO equipmentCreateDTO) {
+    public EquipmentModel update(Long id, EquipmentCreateDTO equipmentCreateDTO) {
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
         if (optionalEquipment.isEmpty())
             throw new NoSuchElementException("No equipment with such ID found");
@@ -45,59 +46,50 @@ public class EquipmentService {
         equipment.setType(equipmentCreateDTO.getType());
         equipment.setSize(equipmentCreateDTO.getSize());
         equipment.setAvailable(equipmentCreateDTO.isAvailable());
-        return toDTO(equipment);
+        return toModel(equipment);
     }
 
-    public List<EquipmentDTO> findAll() {
-        return equipmentRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<Equipment> findAll(Pageable pageable) {
+        return equipmentRepository.findAll(pageable);
     }
 
     public Optional<Equipment> findById(Long id) {
         return equipmentRepository.findById(id);
     }
 
-    public Optional<EquipmentDTO> findByIdAsDTO(Long id) {
-        return toDTO(equipmentRepository.findById(id));
+    public Optional<EquipmentModel> findByIdAsModel(Long id) {
+        return toModel(equipmentRepository.findById(id));
     }
 
     public List<Equipment> findByIds(List<Long> ids) {
         return equipmentRepository.findAllById(ids);
     }
 
-    public List<EquipmentDTO> findAllByAvailability(Boolean available) {
-        return equipmentRepository.findAllByAvailable(available)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<Equipment> findAllByAvailability(Boolean available, Pageable pageable) {
+        return equipmentRepository.findAllByAvailable(available, pageable);
     }
 
-    public List<EquipmentDTO> findAllByTypeAndSize(String type, int size) {
-        return equipmentRepository.findAllByTypeAndSize(type, size)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<Equipment> findAllByTypeAndSize(String type, int size, Pageable pageable) {
+        return equipmentRepository.findAllByTypeAndSize(type, size, pageable);
     }
 
-    public EquipmentDTO delete(Long id) {
+    public EquipmentModel delete(Long id) {
         Optional<Equipment> equipmentToDelete = equipmentRepository.findById(id);
         if (equipmentToDelete.isEmpty())
             throw new NoSuchElementException("No equipment with such ID found");
         if (myOrderRepository.findAllByEquipmentContaining(equipmentToDelete.get()).size() != 0)
             throw new Error("This equipment is part of an order and cant be deleted");
         equipmentRepository.deleteById(id);
-        return toDTO(equipmentToDelete.get());
+        return toModel(equipmentToDelete.get());
     }
 
-    private EquipmentDTO toDTO(Equipment equipment) {
-        return new EquipmentDTO(equipment.getId(), equipment.getSize(), equipment.getType(), equipment.isAvailable());
+    private EquipmentModel toModel(Equipment equipment) {
+        return new EquipmentModel(equipment.getId(), equipment.getSize(), equipment.getType(), equipment.isAvailable());
     }
 
-    private Optional<EquipmentDTO> toDTO(Optional<Equipment> optionalEquipment) {
+    private Optional<EquipmentModel> toModel(Optional<Equipment> optionalEquipment) {
         if (optionalEquipment.isEmpty())
             return Optional.empty();
-        return Optional.of(toDTO(optionalEquipment.get()));
+        return Optional.of(toModel(optionalEquipment.get()));
     }
 }

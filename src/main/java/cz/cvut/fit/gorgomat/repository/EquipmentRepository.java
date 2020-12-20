@@ -1,14 +1,14 @@
 package cz.cvut.fit.gorgomat.repository;
 
 import cz.cvut.fit.gorgomat.entity.Equipment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
-    List<Equipment> findAllByAvailable(Boolean available);
+    Page<Equipment> findAllByAvailable(Boolean available, Pageable pageable);
 
-    List<Equipment> findAllByTypeAndSize(String type, int size);
-
+    Page<Equipment> findAllByTypeAndSize(String type, int size, Pageable pageable);
 }
