@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -66,9 +67,12 @@ public class MyOrderController {
     }
 
     @GetMapping("/myOrders/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
     public MyOrderModel byId(@PathVariable long id) {
-        return myOrderService.findByIdAsModel(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        MyOrderModel model = myOrderModelAssembler.toModel(myOrderService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        model.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(this.getClass()).getMyOrder(0, 5, null, null)
+        ).withRel(IanaLinkRelations.COLLECTION));
+        return model;
     }
 
     @PutMapping("/myOrders/{id}")

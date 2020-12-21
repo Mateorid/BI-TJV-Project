@@ -37,15 +37,13 @@ public class EquipmentModel extends RepresentationModel<EquipmentModel> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EquipmentModel that = (EquipmentModel) o;
-        return size == that.size &&
-                available == that.available &&
-                id.equals(that.id) &&
-                type.equals(that.type);
+        if (!super.equals(o)) return false;
+        EquipmentModel model = (EquipmentModel) o;
+        return size == model.size && available == model.available && Objects.equals(id, model.id) && Objects.equals(type, model.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, size, type, available);
+        return Objects.hash(super.hashCode(), id, size, type, available);
     }
 }

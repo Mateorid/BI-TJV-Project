@@ -67,9 +67,4 @@ public class Equipment {
         Equipment equipment = (Equipment) o;
         return id == equipment.id;
     }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id);
-//    }
 }

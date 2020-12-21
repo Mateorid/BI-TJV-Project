@@ -61,7 +61,7 @@ public class CustomerController {
 
     @GetMapping("/customers/{id}")
     public CustomerModel byId(@PathVariable long id) {
-        CustomerModel model = customerService.findByIdAsModel(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        CustomerModel model = customerModelAssembler.toModel(customerService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
         model.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(this.getClass()).getCustomers(0, 5, null, null)
         ).withRel(IanaLinkRelations.COLLECTION));
