@@ -1,0 +1,166 @@
+POST http://localhost:8080/api/v1/customers
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"name": "Tracer", "email": "alreadytaken@gmail.com"}
+
+###
+
+POST http://localhost:8080/api/v1/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 160,
+  "type": "snowboard",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/api/v1/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 190,
+  "type": "snowboard",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/api/v1/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 561,
+  "type": "delete_me XD",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/api/v1/myOrders
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "dateFrom": "2019-01-01",
+  "dateTo": "2020-01-01",
+  "customerId": 21,
+  "equipmentIds": [22]
+}
+
+###
+
+GET http://localhost:8080/api/v1/customers?page=1&size=5
+
+###
+
+PUT http://localhost:8080/api/v1/equipment/2
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 188,
+  "type": "ski",
+  "available": false
+}
+###
+
+GET http://localhost:8080/api/v1/equipment
+###
+
+GET http://localhost:8080/api/v1/equipment/32
+###
+
+GET http://localhost:8080/api/v1/equipment?type=ski&equipmentSize=180
+###
+
+GET http://localhost:8080/api/v1/equipment?available=true
+###
+
+GET http://localhost:8080/api/v1/customers
+###
+
+GET http://localhost:8080/api/v1/customers/167
+###
+
+GET http://localhost:8080/api/v1/customers?name=Tra&page=0&size=1
+###
+
+GET http://localhost:8080/api/v1/customers?email=nerf
+###
+
+GET http://localhost:8080/api/v1/myOrders
+###
+
+GET http://localhost:8080/api/v1/myOrders/38
+###
+
+GET http://localhost:8080/api/v1/myOrders?customerName=Bastion
+###
+
+GET http://localhost:8080/api/v1/myOrders?customerId=1
+###
+
+GET http://localhost:8080/api/v1/welcome?text=our web
+###
+
+DELETE http://localhost:8080/api/v1/equipment/35
+
+###
+
+DELETE http://localhost:8080/api/v1/customers/21
+
+###
+
+DELETE http://localhost:8080/api/v1/myOrders/24
+
+###
+
+DELETE http://localhost:8080/api/v1/equipment/30
+
+###
+
+POST http://localhost:8080/api/v1/customers
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"name": "Me", "email": "me@gmail.com"}
+
+###
+
+POST http://localhost:8080/api/v1/equipment
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "size": 561,
+  "type": "delete_me XD",
+  "available": true
+}
+
+###
+
+POST http://localhost:8080/api/v1/myOrders
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "dateFrom": "2019-01-01",
+  "dateTo": "2020-01-01",
+  "customerId": 33,
+  "equipmentIds": [34]
+}

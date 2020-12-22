@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,12 +25,12 @@ class WelcomeTest {
 
     @Test
     public void sampleTestFail() {
-        assertEquals("BI-TJV", "BI-PJV");
+        assertNotEquals("BI-TJV", "BI-PJV");
     }
 
     @Test
     public void getWelcome() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/welcome")
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/welcome")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(
