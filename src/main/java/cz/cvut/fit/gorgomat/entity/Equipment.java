@@ -12,7 +12,7 @@ public class Equipment {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     private int size;
@@ -32,7 +32,7 @@ public class Equipment {
         this.available = available;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

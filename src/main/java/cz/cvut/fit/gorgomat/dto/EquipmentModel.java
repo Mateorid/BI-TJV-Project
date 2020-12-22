@@ -6,11 +6,11 @@ import java.util.Objects;
 
 public class EquipmentModel extends RepresentationModel<EquipmentModel> {
     private final Long id;
-    private final int size;
+    private final Integer size;
     private final String type;
     private final boolean available;
 
-    public EquipmentModel(Long id, int size, String type, boolean available) {
+    public EquipmentModel(Long id, Integer size, String type, boolean available) {
         this.id = id;
         this.size = size;
         this.type = type;
@@ -21,7 +21,7 @@ public class EquipmentModel extends RepresentationModel<EquipmentModel> {
         return id;
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 

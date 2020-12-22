@@ -28,7 +28,7 @@ public class MyOrderModelAssembler extends RepresentationModelAssemblerSupport<M
                 myOrder.getDateTo(),
                 customer == null ? null : customer.getId(),
                 equipment == null ? null : equipment.stream().map(Equipment::getId).collect(Collectors.toList())
-        );//todo :)
+        );
 //        .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MyOrderController.class).getMyOrders(0,5,null,null))); //todo :)
 //        .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MyOrderController.class).byId(myOrder.getId())));
     }

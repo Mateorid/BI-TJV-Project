@@ -35,7 +35,7 @@ public class MyOrderService {
     public MyOrderModel create(MyOrderCreateDTO myOrderCreateDTO) {
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
         if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
-            throw new Error("Some equipment/s missing!"); //todo ask how to make this better
+            throw new Error("Some equipment/s missing!");
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())
@@ -57,7 +57,7 @@ public class MyOrderService {
 
         List<Equipment> equipments = equipmentService.findByIds(myOrderCreateDTO.getEquipmentIds());
         if (equipments.size() != myOrderCreateDTO.getEquipmentIds().size())
-            throw new Error("Some equipment/s missing!"); //todo ask how to make this better
+            throw new Error("Some equipment/s missing!");
 
         Customer customer = myOrderCreateDTO.getCustomerId() == null ? null :
                 customerService.findById(myOrderCreateDTO.getCustomerId())

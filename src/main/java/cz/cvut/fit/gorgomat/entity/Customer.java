@@ -13,7 +13,7 @@ public class Customer {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     private String name;
@@ -29,7 +29,7 @@ public class Customer {
         this.email = email;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
