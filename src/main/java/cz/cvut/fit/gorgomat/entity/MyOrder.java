@@ -12,7 +12,7 @@ public class MyOrder {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @NotNull
     private Date dateFrom;
@@ -42,7 +42,7 @@ public class MyOrder {
         this.equipment = equipment;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
