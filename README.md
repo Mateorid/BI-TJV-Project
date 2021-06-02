@@ -1,2 +1,2 @@
-BI-TJV semestrální práce.
-Téma: Aplikace pro ski-areál
+# BI-TJV Project - sever side
+- ski resort equipment inventory system
